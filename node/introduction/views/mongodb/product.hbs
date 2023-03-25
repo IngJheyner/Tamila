@@ -1,0 +1,43 @@
+<h1>Productos</h1>
+{{>flash}}
+
+<p>
+  <a href="/mongodb/product/add" class="btn btn-success">Crear</a>
+</p>
+
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Categoria</th>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Descripcion</th>
+        <th>Fotos</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each datos}}
+        <tr>
+          <td>{{ this._id }}</td>
+          <td><a href="/mongodb/product/category/{{this.category_id._id}}">{{ this.category_id.name }}</a></td>
+          <td>{{ this.name }}</td>
+          <td>${{ formatNumber this.price }}</td>
+          <td>{{ shortDescription this.description }}...</td>
+          <td><a href="/mongodb/product/photo/{{ this._id }}"><i class="fas fa-camera"></i></a></td>
+          <td>
+            <a href="/mongodb/product/edit/{{ this._id }}">
+              <i class="fas fa-edit"></i>
+            </a>
+            &nbsp;&nbsp;
+            <a href="javascript:void(0);" onclick="confirmaAlert('Realemente desea eliminar este registro?', '/mongodb/product/delete/{{ this._id }}')">
+              <i class="fas fa-trash"></i>
+            </a>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

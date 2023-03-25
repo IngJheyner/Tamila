@@ -1,0 +1,14 @@
+<h1>Agregar Categoria</h1>
+{{>flash}}
+<form action="/mongodb/category/add" method="POST">
+
+  <div class="form-group">
+
+    <label for="name">Nombre</label>
+    <input type="text" name="name" id="name" class="form-control">
+
+  </div>
+  <hr>
+  <input type="hidden" name="_csrf" id="_csrf" value="{{ csrfToken }}">
+  <input type="submit" class="btn btn-primary" value="Enviar">
+</form>

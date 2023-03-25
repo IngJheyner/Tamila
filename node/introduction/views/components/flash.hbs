@@ -1,0 +1,9 @@
+{{#if message}}
+  <div class="alert alert-{{css}} alert-dismissible fade show" role="alert">
+    <ul>
+      {{#each message}}
+         <li>{{this.msg}}</li>
+      {{/each}}
+    </ul>
+  </div>
+{{/if}}

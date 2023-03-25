@@ -1,0 +1,12 @@
+<h1>WebPay de transfer</h1>
+<p class="mt-2">Pagando...</p>
+
+<form action="{{ webpay_petition.url }}" method="post" name="form">
+  <input type="hidden" name="token_ws" value="{{ webpay_petition.token }}">
+</form>
+
+<script>
+  window.onload = function() {
+    document.form.submit();
+  };
+</script>

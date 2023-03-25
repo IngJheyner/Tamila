@@ -1,0 +1,35 @@
+<h1>Categorias</h1>
+{{>flash}}
+
+<p>
+  <a href="/mysql/category/add" class="btn btn-success">Crear</a>
+</p>
+
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each data}}
+        <tr>
+          <td>{{ this.id }}</td>
+          <td>{{ this.name }}</td>
+          <td>
+            <a href="/mysql/category/edit/{{ this.id }}">
+              <i class="fas fa-edit"></i>
+            </a>
+            &nbsp;&nbsp;
+            <a href="javascript:void(0);" onclick="confirmaAlert('Realemente desea eliminar este registro?', '/mysql/category/delete/{{ this.id }}')">
+              <i class="fas fa-trash"></i>
+            </a>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

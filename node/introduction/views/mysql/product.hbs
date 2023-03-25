@@ -1,0 +1,43 @@
+<h1>Productos</h1>
+{{>flash}}
+
+<p>
+  <a href="/mysql/product/add" class="btn btn-success">Crear</a>
+</p>
+
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Categoria</th>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Descripcion</th>
+        <th>Fotos</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each data}}
+        <tr>
+          <td>{{ this.id }}</td>
+          <td><a href="/mysql/product/category/{{ 'category.id' }}">{{ 'category.name' }}</a></td>
+          <td>{{ this.name }}</td>
+          <td>${{ formatNumber this.price }}</td>
+          <td>{{ shortDescription this.description }}...</td>
+          <td><a href="/mysql/product/photo/{{ this.id }}"><i class="fas fa-camera"></i></a></td>
+          <td>
+            <a href="/mysql/product/edit/{{ this.id }}">
+              <i class="fas fa-edit"></i>
+            </a>
+            &nbsp;&nbsp;
+            <a href="javascript:void(0);" onclick="confirmaAlert('Realemente desea eliminar este registro?', '/mysql/product/delete/{{ this.id }}')">
+              <i class="fas fa-trash"></i>
+            </a>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
