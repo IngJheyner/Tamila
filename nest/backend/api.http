@@ -1,0 +1,86 @@
+### Recuperar todas las categorías
+GET http://localhost:3000/api/v1/categories
+
+### Recuperar una categoría por id
+GET http://localhost:3000/api/v1/categories/9
+
+### Crear una categoría con POST
+POST http://localhost:3000/api/v1/categories
+Content-Type: application/json
+
+{
+  "name": "Comedia"
+}
+
+### Actualizar una categoría
+PATCH http://localhost:3000/api/v1/categories/11
+Content-Type: application/json
+
+{
+  "name": "Categoria asda"
+}
+
+### Borrar una categoría
+DELETE http://localhost:3000/api/v1/categories/11
+
+
+################### Recetas ###################
+### Recuperar todas las recetas
+GET http://localhost:3000/api/v1/recipe
+
+### Recuperar una receta por id
+GET http://localhost:3000/api/v1/recipe/2
+
+### Crear una receta
+POST http://localhost:3000/api/v1/recipe
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwibmFtZSI6Ikp1YW4gUMOpcmV6IiwiZW1haWwiOiJqdWFuLnBlcmV6QGV4YW1wbGUuY29tIiwiaWF0IjoxNzQ1MjY3MjE4LCJleHAiOjE3NDUzNTM2MTh9.2AY3fE297ikpFAVvcFjKMt-q4wLbJ3na4zzXKYrlrTg
+
+{
+  "name": "Receta de prueba 3",
+  "description": "Descripción de la receta de prueba",
+  "category_id": 9,
+  "user_id": 6,
+  "time": "10 minutos",
+  "date": "2021-01-01",
+  "file": null
+}
+
+### Recuperar todas las recetas home
+GET http://localhost:3000/api/v1/recipe-helper
+
+### Buscar recetas por categoría y nombre
+GET http://localhost:3000/api/v1/recipe-helper/search?category_id=9&search=Receta
+
+################### Contacto ###################
+### Crear un contacto
+POST http://localhost:3000/api/v1/contact
+Content-Type: application/json
+
+{
+  "name": "Juan Pérez",
+  "email": "juan.perez@example.com",
+  "phone": "+573178901234",
+  "message": "Hola, me gustaría saber más sobre sus servicios."
+}
+
+################### Usuario ###################
+### Crear un usuario
+POST http://localhost:3000/api/v1/user/register
+Content-Type: application/json
+
+{
+  "name": "Juan Pérez",
+  "email": "juan.perez@example.com",
+  "password": "123456"
+}
+
+### Login de usuario
+POST http://localhost:3000/api/v1/user/login
+Content-Type: application/json
+
+{
+  "email": "juan.perez@example.com",
+  "password": "123456"
+}
+
