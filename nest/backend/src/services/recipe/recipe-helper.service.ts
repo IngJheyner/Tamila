@@ -17,6 +17,7 @@ export class RecipeHelperService {
       return await this.recipeRepository.find({
         relations: {
           category_id: true,
+          user_id: true,
         },
         order: {
           id: 'DESC',

@@ -1,9 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  // Configurar archivos estáticos
+  app.useStaticAssets(join(__dirname, '..', 'src', 'assets', 'uploads'), {
+    prefix: '/uploads/',
+  });
+
   // swagger
   const config = new DocumentBuilder()
     .setTitle('API Recetas desde el curso de NestJS, Tamila.')
@@ -13,6 +21,7 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('documentation', app, document);
+
   // cors
   app.enableCors();
   app.setGlobalPrefix('api/v1');

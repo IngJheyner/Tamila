@@ -89,6 +89,9 @@ export class RecipeController {
     FileInterceptor('file', {
       storage: diskStorage({
         destination: 'src/assets/uploads/recipes',
+        filename: (req, file, cb) => {
+          cb(null, `${Date.now()}${extname(file.originalname)}`);
+        },
       }),
     }),
   )
