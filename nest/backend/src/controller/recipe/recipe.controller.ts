@@ -36,10 +36,12 @@ export class RecipeController {
   @HttpCode(HttpStatus.OK)
   async index(@Req() request: Request): Promise<RecipeResponseDto[]> {
     const recipes = await this.recipeService.getAll();
-    return recipes.map((recipe) => this.recipeMapperService.mapToResponseDto(recipe, request));
+    return recipes.map((recipe) =>
+      this.recipeMapperService.mapToResponseDto(recipe, request),
+    );
   }
 
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   async show(

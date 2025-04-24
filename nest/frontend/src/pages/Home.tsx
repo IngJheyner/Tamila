@@ -1,11 +1,11 @@
 import { useLoaderData } from 'react-router-dom';
-import { HomeRecipeType } from '../services/HomeService';
-import { useEffect } from 'react';
+import { RecipeType } from '../types/RecipeType';
+// import { useEffect } from 'react';
 //import AuthContext from '../context/AuthProvider';
 
 const Home = () => {
 
-  const recipes = useLoaderData<HomeRecipeType[]>();
+  const recipes = useLoaderData<RecipeType[]>();
 
   return (
     <>
@@ -37,12 +37,12 @@ const Home = () => {
           </div>
 
           <div className="row">
-            {recipes.map((recipe: HomeRecipeType) => (
+            {recipes.map((recipe: RecipeType) => (
               <div key={recipe.id} className='col-12 col-sm-6 col-lg-4'>
                 <div className="single-best-receipe-area mb-30">
                   <img src={recipe.image} alt={recipe.name} className='foto-mini' />
                   <div className="receipe-content">
-                      <a href={`/recetas/detalle/${recipe.id}`} title={recipe.name}>
+                      <a href={`/receta/${recipe.id}/detalle`} title={recipe.name}>
                           <h5>{recipe.name}</h5>
                       </a>
                   </div>

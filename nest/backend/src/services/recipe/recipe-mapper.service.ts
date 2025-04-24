@@ -29,6 +29,7 @@ export class RecipeMapperService {
       image: recipe.image
         ? `${request.protocol}://${request.get('Host')}/uploads/recipes/${recipe.image}`
         : null,
+      description: recipe.description,
       category_id: categoryId,
       category: categoryName,
       user_id: userId,

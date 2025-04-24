@@ -87,6 +87,7 @@ export class RecipeService {
       }
       const newRecipe = this.recipeRepository.create({
         ...recipe,
+        name: recipe.name.toLowerCase(),
         image: image || null,
         category_id: recipe.category_id,
         user_id: recipe.user_id,
