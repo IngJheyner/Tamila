@@ -12,6 +12,8 @@ import RecipeDetails from './pages/recipes/RecipeDetails';
 import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
 import RecipeSearch from './pages/recipes/RecipeSearch';
+import Register from './pages/auth/Register';
+import Login from './pages/auth/Login';
 
 const router = createBrowserRouter([
   {
@@ -77,6 +79,14 @@ const router = createBrowserRouter([
       {
         path: "/contactanos",
         element: <Contact />,
+      },
+      {
+        path: "/registro",
+        element: <Register />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
       },
       {
         path: "*",
