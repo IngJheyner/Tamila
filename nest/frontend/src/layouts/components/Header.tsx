@@ -1,9 +1,9 @@
-import { useContext } from "react";
 import { Link } from "react-router-dom";
-// import AuthContext from "../context/AuthProvider";
-
+import { authLocalStorage } from "../../helpers";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthProvider";
 const Header = () => {
-    // let {authNombre, handleCerrarSesion} = useContext(AuthContext);
+  const { HandleContextlogout } = useContext(AuthContext);
   return (
     <>
     <header className="header-area">
@@ -64,11 +64,11 @@ const Header = () => {
                       <li><Link to="/contactanos" title="Contáctenos">Contáctanos</Link></li>
 
 
-                      {/* {authNombre ? (
+                      {authLocalStorage() && authLocalStorage().token ? (
                           <>
-                          <li><Link to="/panel" title={`Hola ${authNombre}`}>{`Hola ${authNombre}`}</Link></li>
+                          <li><Link to="/panel" title={`Hola ${authLocalStorage().name}`}>{`Hola ${authLocalStorage().name}`}</Link></li>
                           <li>
-                              <Link onClick={()=>{handleCerrarSesion()}} title="Cerrar sesión">Cerrar Sesión</Link>
+                              <Link to="/login" onClick={()=>{HandleContextlogout()}} title="Cerrar sesión">Cerrar Sesión</Link>
                           </li>
                           </>
                       ):(
@@ -76,7 +76,7 @@ const Header = () => {
                           <li><Link to="/registro" title="Registro">Registro</Link></li>
                           <li><Link to="/login" title="Login">Login</Link></li>
                           </>
-                      ) } */}
+                      ) }
 
 
                   </ul>

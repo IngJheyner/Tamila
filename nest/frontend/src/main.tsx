@@ -14,6 +14,7 @@ import NotFound from './pages/NotFound';
 import RecipeSearch from './pages/recipes/RecipeSearch';
 import Register from './pages/auth/Register';
 import Login from './pages/auth/Login';
+import Panel from './pages/panel/Panel';
 
 const router = createBrowserRouter([
   {
@@ -87,6 +88,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "/panel",
+        element: <Panel />,
       },
       {
         path: "*",

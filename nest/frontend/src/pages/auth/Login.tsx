@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
 import {login} from './../../services/AuthService';
 import { useNavigate } from "react-router-dom";
-//import AuthContext from './../context/AuthProvider';
+import { AuthContext } from './../../context/AuthProvider';
 
 const Login = () => {
-  //const {handleIniciarSesion} = useContext(AuthContext);
+  const {HandleContextlogin} = useContext(AuthContext);
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,15 +32,15 @@ const Login = () => {
     setBoton("none");
     setPreloader("block");
     const [data, status] = await login({email, password}) || [null, 0];
-    if(status === 200)
+    if(status === 200 && data !== null)
     {
-      //handleIniciarSesion(login[0].id, login[0].nombre, login[0].token);
+      HandleContextlogin(data);
       navigate("/panel");
     }else
     {
       alert("Se produjo un error inesperado");
-      window.location.href=location.href;
     }
+    //window.location.href=location.href;
   };
   return (
     <>

@@ -1,13 +1,19 @@
 import { createContext, useState } from 'react';
 import { AuthType } from '../types/AuthType';
 
-interface AuthContextType {
+export interface AuthContextType {
   auth: AuthType | null;
   HandleContextAuthenticate: () => void;
   HandleContextlogin: (data: AuthType) => void;
+  HandleContextlogout: () => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType>({
+  auth: null,
+  HandleContextAuthenticate: () => {},
+  HandleContextlogin: () => {},
+  HandleContextlogout: () => {}
+});
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
@@ -29,8 +35,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setAuth(data);
   };
 
+  const HandleContextlogout = () => {
+    localStorage.removeItem('auth');
+    setAuth(null);
+  }
+
   return (
-    <AuthContext.Provider value={{ auth, HandleContextAuthenticate, HandleContextlogin }}>
+    <AuthContext.Provider value={{ auth, HandleContextAuthenticate, HandleContextlogin, HandleContextlogout }}>
       {children}
     </AuthContext.Provider>
   );
