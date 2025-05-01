@@ -45,12 +45,14 @@ const Contact = () => {
     }
     setBoton("none");
     setPreloader("block");
-    if(await sendDataContact({name: name, email:email, phone:phone, message:message})==201)
+    const response = await sendDataContact({name: name, email:email, phone:phone, message:message})
+    if(response==201)
     {
       alert("Tu mensaje fué enviado exitosamente");
     }else
     {
       alert("Se produjo un error inesperado");
+      console.log(response);
     }
     window.location.href = location.href;
 

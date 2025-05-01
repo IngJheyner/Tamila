@@ -15,6 +15,7 @@ import RecipeSearch from './pages/recipes/RecipeSearch';
 import Register from './pages/auth/Register';
 import Login from './pages/auth/Login';
 import Panel from './pages/panel/Panel';
+import PanelEdit from './pages/panel/PanelEdit';
 
 const router = createBrowserRouter([
   {
@@ -92,6 +93,17 @@ const router = createBrowserRouter([
       {
         path: "/panel",
         element: <Panel />,
+      },
+      {
+        path: "/panel-editar/:id",
+        element: <PanelEdit />,
+        loader: async ({params}) => {
+          const recipe = await getRecipe(Number(params.id));
+          if (!recipe) {
+            window.location.href = '/error';
+          }
+          return recipe;
+        },
       },
       {
         path: "*",

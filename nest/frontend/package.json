@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fancyapps/ui": "4.0.31",
     "axios": "^1.8.4",
     "bootstrap": "^5.3.5",
     "react": "^19.0.0",
@@ -28,6 +29,7 @@
     "globals": "^16.0.0",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.26.1",
+    "ui@4.0.31": "link:@types/fancyapps/ui@4.0.31",
     "vite": "^6.3.1"
   }
 }

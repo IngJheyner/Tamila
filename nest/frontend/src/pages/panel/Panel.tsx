@@ -1,28 +1,32 @@
-import { useContext, useState } from "react"
+import { useContext, useRef, useState } from "react"
 import { AuthContext } from './../../context/AuthProvider';
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { getPanel } from "../../services/PanelService";
+import { createRecipe, deleteRecipe, getPanel, updateRecipe } from "../../services/PanelService";
 import { getCategories } from "../../services/RecipeService";
+import { RecipeType } from "../../types/RecipeType";
 //import {sendDataReceta, sendDataRecetaEditar, sendDataRecetaEliminar} from './../servicios/PanelService';
 //injectar fancybox en react
 //npm install @fancyapps/ui@4.0.31
-//import { Fancybox } from '@fancyapps/ui';
-//import "@fancyapps/ui/dist/fancybox.css";
+import { Fancybox } from '@fancyapps/ui';
+import "@fancyapps/ui/dist/fancybox.css";
 //ventana modal
-//import Modal from "react-bootstrap/Modal";
+import Modal from "react-bootstrap/Modal";
+import { CategoryType } from "../../types/CategoryType";
+import { authLocalStorage } from "../../helpers";
+
 const Panel = () => {
   const { HandleContextAuthenticate } = useContext(AuthContext);
-  const [datos, setDatos] = useState([]);
-  const [categorias, setCategorias] = useState([]);
+  const [data, setData] = useState<RecipeType[]>([]);
+  const [categories, setCategories] = useState([]);
   useEffect(() => {
     const traerRecetas = async () => {
 
       const data = await getPanel();
-      setDatos(data);
+      setData(data);
 
       const data2 = await getCategories();
-      setCategorias(data2);
+      setCategories(data2);
     };
 
     return () => {
@@ -36,90 +40,143 @@ const Panel = () => {
   const handleShow = () => setShow(true);
 
   //formulario
-  const [nombre, setNombre] = useState('');
-  const [tiempo, setTiempo] = useState('');
-  const [categoria_id, setCategoriaId] = useState('');
-  const [descripcion, setDescripcion] = useState('');
+  const [input, setInput] = useState<RecipeType>({
+    id: 0,
+    name: '',
+    time: '',
+    category_id: 0,
+    description: '',
+    image: '',
+    slug: '',
+    date: '',
+    category: '',
+    user_id: 0,
+    user: '',
+  });
 
-  const [acciones, setAcciones] = useState(1);
-  const [accionesId, setAccionesId] = useState();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [action, setAction] = useState<number>(1);
+  //const [actionId, setActionId] = useState<number>(0);
 
 
   const handleCrear = () => {
-    setAcciones(1);
-    setNombre('');
-    setTiempo('');
-    setCategoriaId('0');
-    setDescripcion('');
+    setAction(1);
+    setInput({
+      id: 0,
+      name: '',
+      time: '',
+      category_id: 0,
+      description: '',
+      image: '',
+      slug: '',
+      date: '',
+      category: '',
+      user_id: 0,
+      user: '',
+
+    });
     handleShow();
   };
 
-  // const handleEditar = (modulo) => {
+  const handleEditar = (item: RecipeType) => {
 
-  //   setAcciones(2);
-  //   setAccionesId(modulo.id);
-  //   setNombre(modulo.nombre);
-  //   setTiempo(modulo.tiempo);
-  //   setCategoriaId(modulo.categoria_id);
-  //   setDescripcion(modulo.descripcion);
-  //   handleShow();
-  // };
+    setAction(2);
+    //setActionId(item.id);
+    setInput({
+      id: item.id,
+      name: item.name,
+      time: item.time,
+      category_id: item.category_id,
+      description: item.description,
+      image: item.image,
+      slug: item.slug,
+      date: item.date,
+      category: item.category,
+      user_id: item.user_id,
+      user: item.user,
+    });
+    handleShow();
+  };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   if(categoria_id=="0")
-  //   {
-  //       alert("Debe seleccionar una categoría")
-  //       return false;
-  //   }
-  //   if (nombre == 0 || nombre == "") {
-  //     alert("El campo Nombre es obligatorio");
-  //     setNombre("");
-  //     return false;
-  //   }
-  //   if (tiempo == 0 || tiempo == "") {
-  //     alert("El campo Tiempo es obligatorio");
-  //     setNombre("");
-  //     return false;
-  //   }
-  //   if (descripcion == 0 || descripcion == "") {
-  //     alert("El campo Descripción es obligatorio");
-  //     setNombre("");
-  //     return false;
-  //   }
-  //   if(acciones==1)
-  //   {
-  //     try {
-  //       await sendDataReceta(tiempo, categoria_id, descripcion, nombre);
-  //       alert("Se creó el registro exitosamente");
-  //     } catch (error) {
-  //       alert("Ocurrió un error inesperado");
-  //     }
-  //   }
-  //   if(acciones==2)
-  //   {
-  //     try {
-  //       await sendDataRecetaEditar({nombre:nombre, tiempo:tiempo, descripcion:descripcion, categoria_id:categoria_id}, accionesId);
-  //       alert("Se modificó el registro exitosamente");
-  //     } catch (error) {
-  //       alert("Ocurrió un error inesperado");
-  //     }
-  //   }
-  //  window.location="/panel";
-  // };
-  // const handleEliminar=async(id)=>
-  //   {
-  //     if(window.confirm("¿Realmente desea eliminar este registro?"))
-  //     {
-  //       try {
-  //         await sendDataRecetaEliminar(id);
-  //         alert("Se eliminó el registro exitosamente");
-  //       } catch (error) {
-  //         alert("Ocurrió un error inesperado");
-  //       }
-  //       window.location="/panel";
-  //     }
-  //   };
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if(input.category_id==0)
+    {
+        alert("Debe seleccionar una categoría")
+        return false;
+    }
+    if (input.name == "") {
+      alert("El campo Nombre es obligatorio");
+      setInput({...input, name: ''});
+      return false;
+    }
+    if (input.time == "") {
+      alert("El campo Tiempo es obligatorio");
+      setInput({...input, time: ''});
+      return false;
+    }
+    if (input.description == "") {
+      alert("El campo Descripción es obligatorio");
+      setInput({...input, description: ''});
+      return false;
+    }
+    if(action==1)
+    {
+      try {
+        const file = fileInputRef.current?.files?.[0];
+        const formData = new FormData();
+        formData.append('id', input.id.toString());
+        formData.append('user_id', authLocalStorage().id.toString());
+        formData.append('name', input.name);
+        formData.append('time', input.time);
+        formData.append('description', input.description || '');
+        formData.append('category_id', input.category_id.toString());
+        if (file) {
+          formData.append('file', file);
+        }
+        await createRecipe(formData);
+        alert("Se creó el registro exitosamente");
+      } catch (error) {
+        console.log("🚀 ~ handleSubmit ~ error:", error)
+        alert("Ocurrió un error inesperado");
+      }
+    }
+    if(action==2)
+    {
+      try {
+        const file = fileInputRef.current?.files?.[0];
+        const formData = new FormData();
+        formData.append('id', input.id.toString());
+        formData.append('user_id', authLocalStorage().id.toString());
+        formData.append('name', input.name);
+        formData.append('time', input.time);
+        formData.append('description', input.description || '');
+        formData.append('category_id', input.category_id.toString());
+        if (file) {
+          formData.append('file', file);
+        }
+        await updateRecipe(formData);
+        alert("Se modificó el registro exitosamente");
+      } catch (error) {
+        console.log("🚀 ~ handleSubmit ~ error:", error)
+        alert("Ocurrió un error inesperado");
+      }
+    }
+   window.location.href="/panel";
+  };
+
+  const handleEliminar=async(id:number)=>
+    {
+      if(window.confirm("¿Realmente desea eliminar este registro?"))
+      {
+
+          await deleteRecipe(id);
+          alert("Se eliminó el registro exitosamente");
+
+        window.location.href="/panel";
+      }
+    };
   return (
     <>
       <div className="breadcumb-area bg-img bg-overlay" style={{ backgroundImage: "url(img/bg-img/breadcumb6.jpg)" }}>
@@ -167,30 +224,30 @@ const Panel = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {/* {datos.map((dato) =>
+                    {data.map((item) =>
                     (
-                      <tr key={dato.id}>
-                        <td>{dato.id}</td>
-                        <td>{dato.categoria}</td>
-                        <td>{dato.nombre}</td>
-                        <td>{dato.tiempo}</td>
-                        <td>{dato.descripcion}</td>
+                      <tr key={item.id}>
+                        <td>{item.id}</td>
+                        <td>{item.category}</td>
+                        <td>{item.name}</td>
+                        <td>{item.time}</td>
+                        <td>{item.description}</td>
                         <td className="text-center">
-                          <a href={dato.foto} className="lightbox d-block" data-fancybox="image-gallery">
-                            <img src={dato.foto} alt="" style={{ width: "100px" }} />
+                          <a href={item.image} className="lightbox d-block" data-fancybox="image-gallery">
+                            <img src={item.image || 'https://cdn.pixabay.com/photo/2016/12/26/17/28/spaghetti-1932466_1280.jpg'} alt="" style={{ width: "100px" }} />
                           </a>
                         </td>
                         <td className="text-center">
-                          <Link to={`/panel-editar/${dato.id}`} title="Editar foto"><i className="fas fa-pen-square"></i></Link>
+                          <Link to={`/panel-editar/${item.id}`} title="Editar foto"><i className="fas fa-pen-square"></i></Link>
                           &nbsp;&nbsp;
-                          <Link to="#" onClick={()=>{handleEditar(dato)}} title="Editar">
+                          <Link to="#" onClick={()=>{handleEditar(item)}} title="Editar">
                             <i className="fas fa-edit"></i>
                           </Link>
                           &nbsp;&nbsp;
-                          <Link onClick={()=>handleEliminar(dato.id)} to="#" title="Eliminar"><i className="fas fa-trash"></i></Link>
+                          <Link onClick={()=>handleEliminar(item.id)} to="#" title="Eliminar"><i className="fas fa-trash"></i></Link>
                         </td>
                       </tr>
-                    ))} */}
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -198,10 +255,10 @@ const Panel = () => {
           </div>
         </div>
       </div>
-      {/* <Modal show={show} onHide={handleClose} size="lg" id="listingModal">
+      <Modal show={show} onHide={handleClose} size="lg" id="listingModal">
         <Modal.Header>
           <Modal.Title>
-            {acciones == 1 ? "Crear" : "Editar"}
+            {action == 1 ? "Crear" : "Editar"}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -210,10 +267,10 @@ const Panel = () => {
 
               <div className="col-lg-12">
                 <label htmlFor="categoria_id">Categoría</label>
-                <select id="categoria_id" value={categoria_id} onChange={(e) => setCategoriaId(e.target.value)} className="form-control">
+                <select id="categoria_id" value={input.category_id} onChange={(e) => setInput({...input, category_id: parseInt(e.target.value)})} className="form-control">
                   <option value="0">Seleccione.....</option>
-                  {categorias.map((categoria) => (
-                    <option key={categoria.id} value={categoria.id}>{categoria.nombre}</option>
+                  {categories.map((category: CategoryType) => (
+                    <option key={category.id} value={category.id}>{category.name}</option>
                   ))}
                 </select>
               </div>
@@ -227,8 +284,8 @@ const Panel = () => {
                   id="nombre"
                   type="text"
                   placeholder='Nombre'
-                  value={nombre}
-                  onChange={(e) => { setNombre(e.target.value) }}
+                  value={input.name}
+                  onChange={(e) => { setInput({...input, name: e.target.value}) }}
                 />
               </div>
 
@@ -241,20 +298,21 @@ const Panel = () => {
                   id="tiempo"
                   type="text"
                   placeholder='Tiempo'
-                  value={tiempo}
-                  onChange={(e) => { setTiempo(e.target.value) }}
+                  value={input.time}
+                  onChange={(e) => { setInput({...input, time: e.target.value}) }}
                 />
               </div>
               <div className="col-lg-12">
                 <label htmlFor="descripcion">Descripción:</label>
-                <textarea value={descripcion}
-                  onChange={(e) => setDescripcion(e.target.value)} id="descripcion" className="form-control" placeholder="Descripción"></textarea>
+                <textarea value={input.description || ''}
+                  onChange={(e) => setInput({...input, description: e.target.value})} id="descripcion" className="form-control" placeholder="Descripción"></textarea>
               </div>
-              {acciones == 1 && (
+              {action == 1 && (
                 <>
                   <div className="col-lg-12">
                     <label htmlFor="foto">Foto</label>
-                    <input type="file" id="foto" className="form-control" placeholder="Foto" />
+                    <input type="file" id="foto" className="form-control" placeholder="Foto"
+                    ref={fileInputRef} />
                   </div>
                 </>
               )}
@@ -266,7 +324,7 @@ const Panel = () => {
               <div className="col-6"></div>
               <div className="col-6 d-flex justify-content-end">
                 <button className="btn btn-primary">
-                {acciones==1 ?
+                {action==1 ?
                 (
                   <>
                     <i className="fas fa-plus"></i> Crear
@@ -283,7 +341,7 @@ const Panel = () => {
 
           </form>
         </Modal.Body>
-      </Modal> */}
+      </Modal>
     </>
   )
 }

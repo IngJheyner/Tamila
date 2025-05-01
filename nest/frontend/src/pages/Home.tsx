@@ -40,7 +40,7 @@ const Home = () => {
             {recipes.map((recipe: RecipeType) => (
               <div key={recipe.id} className='col-12 col-sm-6 col-lg-4'>
                 <div className="single-best-receipe-area mb-30">
-                  <img src={recipe.image} alt={recipe.name} className='foto-mini' />
+                  <img src={recipe.image || 'https://cdn.pixabay.com/photo/2016/12/26/17/28/spaghetti-1932466_1280.jpg'} alt={recipe.name} className='foto-mini' />
                   <div className="receipe-content">
                       <a href={`/receta/${recipe.id}/detalle`} title={recipe.name}>
                           <h5>{recipe.name}</h5>

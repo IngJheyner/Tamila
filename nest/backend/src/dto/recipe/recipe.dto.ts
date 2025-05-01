@@ -14,7 +14,6 @@ export class RecipeDto {
   @ApiProperty({ description: 'Descripción de la receta' })
   @IsNotEmpty({ message: 'La descripción es requerida.' })
   description: string;
-  @IsNotEmpty({ message: 'La fecha es requerida.' })
   date: Date;
   @ApiProperty({ description: 'Imagen de la receta' })
   image?: string;

@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@fancyapps/ui':
+        specifier: 4.0.31
+        version: 4.0.31
       axios:
         specifier: ^1.8.4
         version: 1.8.4
@@ -57,6 +60,9 @@ importers:
       typescript-eslint:
         specifier: ^8.26.1
         version: 8.31.0(eslint@9.25.1)(typescript@5.7.3)
+      ui@4.0.31:
+        specifier: link:@types/fancyapps/ui@4.0.31
+        version: link:@types/fancyapps/ui@4.0.31
       vite:
         specifier: ^6.3.1
         version: 6.3.2
@@ -337,6 +343,9 @@ packages:
   '@eslint/plugin-kit@0.2.8':
     resolution: {integrity: sha512-ZAoA40rNMPwSm+AeHpCq8STiNAwzWLJuP8Xv4CHIc9wv/PSuExjMrmjfYNj682vW0OOiZ1HKxzvjQr9XZIisQA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@fancyapps/ui@4.0.31':
+    resolution: {integrity: sha512-D7+PMIloxSOFJyY+lXcNlVDhmssOmDT6PT5fqQUIiws2hT7PH29r0EKZxERmACSQpm6qrFkP7rSguzXWvRJduQ==}
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -1574,6 +1583,8 @@ snapshots:
     dependencies:
       '@eslint/core': 0.13.0
       levn: 0.4.1
+
+  '@fancyapps/ui@4.0.31': {}
 
   '@humanfs/core@0.19.1': {}
 

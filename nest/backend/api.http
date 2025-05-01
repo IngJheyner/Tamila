@@ -52,6 +52,10 @@ GET http://localhost:3000/api/v1/recipe-helper
 ### Buscar recetas por categoría y nombre
 GET http://localhost:3000/api/v1/recipe-helper/search?category_id=9&search=prueba
 
+### Recuperar todas las recetas del panel
+GET http://localhost:3000/api/v1/recipe-helper/panels/12/user
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsIm5hbWUiOiJPZGlvIGFzc3VtZW5kYSBjb3JydSIsImVtYWlsIjoidGVzdEBtYWlsLmNvbSIsImlhdCI6MTc0NjEzMjYyMywiZXhwIjoxNzQ2MjE5MDIzfQ.TW4x_zevHzUE0PYBC-9y6gMeaYvGnXQPyCZOPZNapJE
+
 ################### Contacto ###################
 ### Crear un contacto
 POST http://localhost:3000/api/v1/contact

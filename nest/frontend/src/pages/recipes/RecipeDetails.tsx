@@ -1,14 +1,15 @@
 import { useLoaderData } from 'react-router-dom';
 import { RecipeType } from '../../types/RecipeType';
+import { useContext, useEffect } from 'react';
+import { AuthContext } from '../../context/AuthProvider';
 
-// export async function loader({params})
-// {
-//     let datos = await getRecipe(params.id);
-//     if(!datos){window.location="/error";}
-//     return datos;
-// }
  const RecipeDetails = () => {
   const recipe = useLoaderData<RecipeType>();
+  const { HandleContextAuthenticate } = useContext(AuthContext);
+  useEffect(() => {
+    HandleContextAuthenticate();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <>
         <div className="breadcumb-area bg-img bg-overlay" style={{ backgroundImage: "url(img/bg-img/breadcumb4.jpg)" }}>

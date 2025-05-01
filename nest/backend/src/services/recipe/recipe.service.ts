@@ -89,6 +89,7 @@ export class RecipeService {
         ...recipe,
         name: recipe.name.toLowerCase(),
         image: image || null,
+        date: new Date(),
         category_id: recipe.category_id,
         user_id: recipe.user_id,
       });
